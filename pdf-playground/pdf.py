@@ -1,16 +1,24 @@
 import PyPDF2
 import sys
 
-inputs = sys.argv[1:]
+template = PyPDF2.PdfFileReader(open("super.pdf", "rb"))
 
 
-def pdf_combiner(pdf_list):
-    for pdf in pdf_list:
-        print(pdf)
+# combine pdfs into one file
+# inputs = sys.argv[1:]
 
 
-pdf_combiner(inputs)
+# def pdf_combiner(pdf_list):
+#     merger = PyPDF2.PdfFileMerger()
+#     for pdf in pdf_list:
+#         print(pdf)
+#         merger.append(pdf)
+#     merger.write("super.pdf")
 
+
+# pdf_combiner(inputs)
+
+# read and alter pdf
 # with open("dummy.pdf", "rb") as file:
 #     reader = PyPDF2.PdfFileReader(file)
 #     page = reader.getPage(0)
