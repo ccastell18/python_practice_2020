@@ -1,5 +1,33 @@
 import requests
+import hashlib
 
-url = "https://api.pwnedpasswords.com/range/" + "password123"
-res = requests.get(url)
-print(res)
+
+def request_api_data(query_char):
+    url = "https://api.pwnedpasswords.com/range/" + query_char
+    res = requests.get(url)
+    if res.status_code != 200:
+        raise RuntimeError(
+            f"Error fetching: {res.status_code}, check api and try again"
+        )
+    return res
+
+
+def get_password_leaks_count(hashes, hash_to_check):
+    hashes = (line.split(":") for line in hashes.text.splitlines())
+    for h, count in hashes:
+        print(h, count)
+
+
+def pwned_api_check(password):
+    # check password if it exists in Api response
+    sha1password = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
+
+    # get first 5 characters and last 5 characters
+    first5_char, tail = sha1password[:5], sha1password[5:]
+    response = request_api_data(first5_char)
+    print(response)
+    return get_password_leaks_count(response, tail)
+    # print(hashlib.sha1(password.encode("utf-8")).hexdigest().upper())
+
+
+pwned_api_check("123")
